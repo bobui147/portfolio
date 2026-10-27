@@ -9,6 +9,7 @@
     "check": "node --check src/navigation.js && node scripts/check.mjs && node scripts/check-client.mjs",
     "preview": "vite preview",
     "deploy:firebase": "firebase deploy --only hosting",
+    "verify:deploy": "node scripts/verify-deploy.mjs",
     "start": "node scripts/serve.mjs"
   },
   "dependencies": {

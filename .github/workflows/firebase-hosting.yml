@@ -1,0 +1,107 @@
+name: Firebase Hosting CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'duong-portfolio/**'
+      - '.github/workflows/firebase-hosting.yml'
+  pull_request:
+    paths:
+      - 'duong-portfolio/**'
+      - '.github/workflows/firebase-hosting.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-hosting-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    working-directory: duong-portfolio
+
+jobs:
+  check:
+    name: Check and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: duong-portfolio/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check React and Motion behavior
+        run: npm run check
+      - name: Build production website
+        run: npm run build
+
+  deploy:
+    name: Deploy Firebase Hosting
+    needs: check
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'bobui147/portfolio'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    environment:
+      name: production
+      url: https://bui-tung-duong-portfolio.web.app
+    env:
+      FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+      GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+    steps:
+      - name: Check out verified source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: duong-portfolio/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install Firebase CLI
+        run: npm install --global firebase-tools@15.31.0 --no-audit --no-fund
+      - name: Verify deployment configuration
+        run: |
+          test -n "$FIREBASE_PROJECT_ID"
+          test -n "$GCP_WORKLOAD_IDENTITY_PROVIDER"
+          test -n "$GCP_SERVICE_ACCOUNT"
+      - name: Skip commits superseded on main
+        id: revision
+        run: |
+          latest_commit="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$latest_commit" = "$GITHUB_SHA" ]; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "A newer commit is on main; this run will not deploy."
+          fi
+      - name: Authenticate to Google Cloud
+        if: steps.revision.outputs.current == 'true'
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          project_id: ${{ env.FIREBASE_PROJECT_ID }}
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+      - name: Build and deploy to the live site
+        if: steps.revision.outputs.current == 'true'
+        run: npm run deploy:firebase -- --project "$FIREBASE_PROJECT_ID" --non-interactive
+      - name: Verify the published website and assets
+        if: steps.revision.outputs.current == 'true'
+        run: npm run verify:deploy

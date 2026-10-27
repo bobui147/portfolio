@@ -29,6 +29,12 @@ npm run deploy:firebase
 
 HTML and the downloadable CV use `no-cache`; fingerprinted JS/CSS/image assets use long-lived immutable caching. Hosting cache files and Firebase debug logs are ignored by Git.
 
+## Automatic deployment with GitHub Actions
+
+Push changes to `main` to run checks/builds and automatically update Firebase Hosting after they pass. Pull requests run checks without deployment. View runs or start a manual run in [GitHub Actions](https://github.com/bobui147/portfolio/actions/workflows/firebase-hosting.yml).
+
+The workflow uses Google Cloud OIDC with a dedicated deployment service account. See [CI_CD.md](CI_CD.md) for its authentication scope, repository variables, and deployment checks.
+
 ## React and Motion
 
 The previous implementation had no React dependency. This version uses React / React DOM 19.3.1, Motion 14.7.0, and Vite 8.3.5 with pinned versions in `package-lock.json`.
