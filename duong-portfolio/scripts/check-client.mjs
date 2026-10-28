@@ -58,7 +58,7 @@ try {
   const { default: App } = await server.ssrLoadModule('/App.jsx');
   await act(async () => root.render(createElement(MotionConfig, { reducedMotion: 'user' }, createElement(App))));
   assert.equal(document.querySelector('h1').textContent, 'Bùi Tùng Dương');
-  assert.equal(document.querySelectorAll('.project').length, 3);
+  assert.equal(document.querySelectorAll('.project').length, 4);
   assert(document.querySelector('.project').style.opacity === '0', 'Cards should wait for viewport entry');
   await act(async () => {
     observers.forEach(observer => observer.enterAll());

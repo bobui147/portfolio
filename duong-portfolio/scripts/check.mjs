@@ -15,9 +15,10 @@ try {
   assert.equal(new Set(ids).size, ids.length, 'Duplicate HTML ids');
   for (const anchor of document.querySelectorAll('a[href^="#"]')) assert(document.getElementById(anchor.hash.slice(1)), `Missing anchor: ${anchor.hash}`);
   for (const anchor of document.querySelectorAll('a[href^="./"]')) await access(resolve('src', anchor.getAttribute('href')));
-  assert.equal(document.querySelectorAll('.project').length, 3);
+  assert.equal(document.querySelectorAll('.project').length, 4);
+  assert.equal(document.querySelector('.project h3 a').getAttribute('href'), 'https://c4-app-045.id.vn/', 'Atomesus must be the first project');
   assert.equal(document.querySelectorAll('main section').length, 5);
-  for (const url of ['https://cleanmarket.io.vn/', 'https://gitlab.com/30MUNH/railgo', 'https://github.com/bobibotumtim/PizzaConnect-Restaurant-Management-System']) {
+  for (const url of ['https://c4-app-045.id.vn/', 'https://cleanmarket.io.vn/', 'https://gitlab.com/30MUNH/railgo', 'https://github.com/bobibotumtim/PizzaConnect-Restaurant-Management-System']) {
     assert([...document.querySelectorAll('.project a')].some(anchor => anchor.getAttribute('href') === url));
   }
   assert.equal(document.querySelectorAll('img').length, 0, 'Personal portraits remain omitted');
@@ -38,10 +39,13 @@ try {
     const original = new JSDOM(baseline).window.document;
     // The footer attribution was subsequently removed at the user's request.
     original.querySelector('.template-credit')?.remove();
+    // Atomesus was added after migration; compare the unchanged original content.
+    const migrated = document.cloneNode(true);
+    migrated.querySelector('.project a[href="https://c4-app-045.id.vn/"]').closest('.project').remove();
     const text = element => element.textContent.replace(/\s+/g, '');
-    for (const selector of ['.site-header', '.nav-drawer', 'main', '.footer']) assert.equal(text(document.querySelector(selector)), text(original.querySelector(selector)), `Content changed: ${selector}`);
-    assert.deepEqual([...document.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), [...original.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), 'Links changed during migration');
-    assert.equal(document.querySelectorAll('svg').length, original.querySelectorAll('svg').length, 'SVG illustrations changed');
+    for (const selector of ['.site-header', '.nav-drawer', 'main', '.footer']) assert.equal(text(migrated.querySelector(selector)), text(original.querySelector(selector)), `Content changed: ${selector}`);
+    assert.deepEqual([...migrated.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), [...original.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), 'Links changed during migration');
+    assert.equal(migrated.querySelectorAll('svg').length, original.querySelectorAll('svg').length, 'SVG illustrations changed');
     console.log('Migration verified: original text, all links, SVGs, and section structure preserved.');
   }
   console.log('React rendering, navigation targets, project links, background assets, and original CV verified.');

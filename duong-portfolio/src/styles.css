@@ -107,6 +107,7 @@ h1, h2, h3, h4 { line-height: 1.25; }
 .project { min-width: 0; border-radius: 5px; transition: box-shadow 280ms ease; }
 .project-image-link { display: block; border-radius: 5px; }
 .project-art { aspect-ratio: 16 / 9; width: 100%; position: relative; isolation: isolate; overflow: hidden; border-radius: 5px; color: var(--art-ink); background: var(--art-background); }
+.atomesus-art { --art-background: #132d42; --art-ink: #a5ddeb; }
 .market-art { --art-background: #183a30; --art-ink: #b9dfb7; }
 .rail-art { --art-background: #2c2251; --art-ink: #d6c4ff; }
 .pizza-art { --art-background: #47271e; --art-ink: #f1c3a1; }
@@ -114,6 +115,7 @@ h1, h2, h3, h4 { line-height: 1.25; }
 .art-caption { position: absolute; top: 9%; left: 6%; font: clamp(7px, .65vw, 11px)/1.4 var(--mono); letter-spacing: .13em; opacity: .8; }
 .art-name { position: absolute; left: 6%; bottom: 23%; font-size: clamp(26px, 2.6vw, 48px); font-weight: 900; line-height: 1.15; letter-spacing: -.035em; }
 .art-stack { position: absolute; bottom: 10%; left: 6%; font: clamp(8px, .8vw, 13px)/1.4 var(--mono); opacity: .8; }
+.pipeline-symbol { width: 43%; height: auto; position: absolute; right: 4%; top: 14%; opacity: .75; }
 .market-symbol { width: 38%; height: auto; position: absolute; right: 6%; top: 13%; transform: rotate(9deg); opacity: .75; }
 .rail-route { display: flex; align-items: center; gap: 15px; position: absolute; left: 8%; right: 8%; top: 25%; }
 .rail-route i { width: 10px; height: 10px; border: 2px solid currentColor; border-radius: 50%; }
