@@ -51,7 +51,7 @@ Scroll reveals run once with a soft fade, blur, scale, and rise: 28px over 680ms
 
 Reduced motion disables translation, fades, hover movement, and smooth scrolling. In addition to `useReducedMotion`, media-query subscriptions handle preference changes while the site is open.
 
-The contact form opens a prepared email draft after validation. The visitor sends it from their email application. Direct email, phone, GitHub, project links, and the original downloadable CV are preserved.
+The contact form opens a prepared email draft after validation. The visitor sends it from their email application. Direct email, phone, GitHub, Instagram, project links, and the original downloadable CV are preserved.
 
 ## Validation
 

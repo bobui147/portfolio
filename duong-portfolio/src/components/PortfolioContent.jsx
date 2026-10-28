@@ -83,4 +83,4 @@ export function Contact({ onCopyEmail, copyStatus, onSubmit, onFormInput, formSt
   </form>
 </Reveal>; }
 
-export function Footer() { return <Reveal as="footer" className="footer"><p>© {new Date().getFullYear()} Bùi Tùng Dương</p><p>Full Stack Developer <span aria-hidden="true">♥</span> Hanoi, Vietnam</p><div className="footer-links"><a href="mailto:duongbui147205@gmail.com">Say Hello</a><a href="#home">Back to top ↑</a></div></Reveal>; }
+export function Footer() { return <Reveal as="footer" className="footer"><p>© {new Date().getFullYear()} Bùi Tùng Dương</p><p>Full Stack Developer <span aria-hidden="true">♥</span> Hanoi, Vietnam</p><div className="footer-links"><a href="https://github.com/bobui147" target="_blank" rel="noopener noreferrer">GitHub</a><a href="https://www.instagram.com/iubgnoud/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="mailto:duongbui147205@gmail.com">Say Hello</a><a href="#home">Back to top ↑</a></div></Reveal>; }

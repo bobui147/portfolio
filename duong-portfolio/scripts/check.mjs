@@ -19,6 +19,9 @@ try {
   assert.equal(document.querySelector('.project h3 a').getAttribute('href'), 'https://c4-app-045.id.vn/', 'Atomesus must be the first project');
   assert(document.querySelector('.project').classList.contains('project-featured'), 'Atomesus must use the featured project layout');
   assert.equal(document.querySelector('.brand-mark').textContent, 'BTD');
+  for (const url of ['https://github.com/bobui147', 'https://www.instagram.com/iubgnoud/']) {
+    assert([...document.querySelectorAll('a')].some(anchor => anchor.getAttribute('href') === url), `Missing social profile: ${url}`);
+  }
   assert(document.querySelector('.hire-badge'));
   assert(document.querySelector('.developer-art'), 'Hero must use the abstract developer artwork');
   assert.equal(document.querySelectorAll('main section').length, 5);
