@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 
 const elements = { section: motion.section, div: motion.div, h2: motion.h2, footer: motion.footer, article: motion.article };
 const easing = [.22, 1, .36, 1];
-const visible = { opacity: 1, y: 0 };
+const visible = { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' };
 
 function useMediaQuery(query) {
   const media = useMemo(() => typeof window === 'undefined' ? null : window.matchMedia(query), [query]);
@@ -40,8 +40,8 @@ export function Reveal({ as = 'div', delay = 0, project = false, children, ...pr
       animate={instant ? 'visible' : undefined}
       whileInView="visible"
       viewport={{ once: true, amount: .08, margin: '0px 0px -24px 0px' }}
-      variants={{ hidden: { opacity: 0, y: mobile ? 16 : 22 }, visible }}
-      transition={{ duration: instant ? 0 : project && revealed ? .25 : mobile ? .55 : .65, delay: instant || revealed ? 0 : delay, ease: easing }}
+      variants={{ hidden: { opacity: 0, y: mobile ? 18 : 28, scale: project ? .985 : .995, filter: 'blur(6px)' }, visible }}
+      transition={{ duration: instant ? 0 : project && revealed ? .3 : mobile ? .58 : .68, delay: instant || revealed ? 0 : delay, ease: easing }}
       whileHover={project && canHover && !reduced ? { y: -4, transition: { duration: .25, delay: 0, ease: easing } } : undefined}
       onFocusCapture={() => setForcedVisible(true)}
       onAnimationComplete={definition => { if (definition === 'visible') setRevealed(true); }}

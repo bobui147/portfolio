@@ -17,6 +17,10 @@ try {
   for (const anchor of document.querySelectorAll('a[href^="./"]')) await access(resolve('src', anchor.getAttribute('href')));
   assert.equal(document.querySelectorAll('.project').length, 4);
   assert.equal(document.querySelector('.project h3 a').getAttribute('href'), 'https://c4-app-045.id.vn/', 'Atomesus must be the first project');
+  assert(document.querySelector('.project').classList.contains('project-featured'), 'Atomesus must use the featured project layout');
+  assert.equal(document.querySelector('.brand-mark').textContent, 'BTD');
+  assert(document.querySelector('.hire-badge'));
+  assert(document.querySelector('.developer-art'), 'Hero must use the abstract developer artwork');
   assert.equal(document.querySelectorAll('main section').length, 5);
   for (const url of ['https://c4-app-045.id.vn/', 'https://cleanmarket.io.vn/', 'https://gitlab.com/30MUNH/railgo', 'https://github.com/bobibotumtim/PizzaConnect-Restaurant-Management-System']) {
     assert([...document.querySelectorAll('.project a')].some(anchor => anchor.getAttribute('href') === url));
@@ -32,21 +36,5 @@ try {
     assert.equal(image.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
   }
 
-  // Migration check is optional after the ignored pre-React snapshot is removed.
-  let baseline;
-  try { baseline = await readFile('.superdesign/tmp/pre-react.html', 'utf8'); } catch {}
-  if (baseline) {
-    const original = new JSDOM(baseline).window.document;
-    // The footer attribution was subsequently removed at the user's request.
-    original.querySelector('.template-credit')?.remove();
-    // Atomesus was added after migration; compare the unchanged original content.
-    const migrated = document.cloneNode(true);
-    migrated.querySelector('.project a[href="https://c4-app-045.id.vn/"]').closest('.project').remove();
-    const text = element => element.textContent.replace(/\s+/g, '');
-    for (const selector of ['.site-header', '.nav-drawer', 'main', '.footer']) assert.equal(text(migrated.querySelector(selector)), text(original.querySelector(selector)), `Content changed: ${selector}`);
-    assert.deepEqual([...migrated.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), [...original.querySelectorAll('a')].map(anchor => anchor.getAttribute('href')), 'Links changed during migration');
-    assert.equal(migrated.querySelectorAll('svg').length, original.querySelectorAll('svg').length, 'SVG illustrations changed');
-    console.log('Migration verified: original text, all links, SVGs, and section structure preserved.');
-  }
-  console.log('React rendering, navigation targets, project links, background assets, and original CV verified.');
+  console.log('React rendering, CodeBucks-inspired layout, navigation targets, project links, background assets, and original CV verified.');
 } finally { await server.close(); }

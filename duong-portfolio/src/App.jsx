@@ -4,7 +4,7 @@ import { Home, Expertise, History, Projects, Contact, Footer } from './component
 import { initSectionNavigation } from './navigation.js';
 
 export default function App() {
-  const [theme, setTheme] = useState(() => typeof document === 'undefined' ? 'dark' : document.documentElement.dataset.theme || 'dark');
+  const [theme, setTheme] = useState(() => typeof document === 'undefined' ? 'light' : document.documentElement.dataset.theme || 'light');
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [copyStatus, setCopyStatus] = useState('');
@@ -13,7 +13,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#0d1116' : '#f8f9fa';
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#1b1b1b' : '#f5f5f5';
     try { localStorage.setItem('duong-theme', theme); } catch {}
   }, [theme]);
 

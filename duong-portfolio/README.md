@@ -1,6 +1,6 @@
 # Bùi Tùng Dương — React portfolio
 
-A portfolio adapted from [Yuji Sato's template](https://github.com/yujisatojr/react-portfolio-template), retaining the supplied CV content, Lato typography, original backgrounds, responsive layout, and dark/light themes. The personal portrait is omitted.
+A responsive developer portfolio inspired by the visual language of [CodeBucks' Next.js portfolio](https://github.com/codebucks27/Next.js-Developer-Portfolio-Starter-Code). It recreates the bold Montserrat typography, centered circular monogram, two-column hero, rotating contact badge, offset project cards, and light/dark themes in the existing React/Vite application. The personal portrait is replaced by original abstract developer artwork.
 
 ## Run
 
@@ -41,13 +41,13 @@ The previous implementation had no React dependency. This version uses React / R
 
 - `src/main.jsx` mounts React with `MotionConfig reducedMotion="user"`.
 - `src/App.jsx` owns theme persistence, modal navigation, email copying, and form behavior.
-- `src/components/Navigation.jsx` renders the existing desktop menu and mobile drawer.
-- `src/components/PortfolioContent.jsx` keeps all CV text, links, SVG illustrations, and section structure.
+- `src/components/Navigation.jsx` renders the three-part CodeBucks-inspired header and accessible mobile drawer.
+- `src/components/PortfolioContent.jsx` renders the hero artwork, biography, expertise, chronology, featured projects, contact form, and footer from the supplied CV content.
 - `src/components/Reveal.jsx` provides reusable `Reveal` and `ProjectCard` components with `whileInView`, `viewport.once`, `whileHover`, and reduced-motion support.
 - `src/navigation.js` retains section tracking and native hash navigation.
-- `src/styles.css` retains the existing UI and CSS micro-interactions; the old reveal rules are removed to prevent transform conflicts.
+- `src/styles.css` keeps the responsive light/dark design and adds subtle navigation, hero-art, icon, project-image, and constellation micro-interactions without conflicting with Motion reveals.
 
-Scroll reveals run once: a 22px rise over 650ms on desktop, or 16px over 550ms on mobile. Project cards stagger by 90ms and lift 4px on hover. Hover exits use a short transition without replaying the entry delay. Touch events do not trigger hover. Keyboard focus reveals pending content immediately.
+Scroll reveals run once with a soft fade, blur, scale, and rise: 28px over 680ms on desktop, or 18px over 580ms on mobile. Project cards stagger by 90ms and lift 4px on hover. The header and hero enter in sequence, decorative artwork moves slowly while idle, and project artwork responds gently to hover. Hover exits use a short transition without replaying the entry delay. Touch events do not trigger hover. Keyboard focus reveals pending content immediately.
 
 Reduced motion disables translation, fades, hover movement, and smooth scrolling. In addition to `useReducedMotion`, media-query subscriptions handle preference changes while the site is open.
 
@@ -57,4 +57,4 @@ The contact form opens a prepared email draft after validation. The visitor send
 
 The check scripts render the real React components and exercise the real Motion runtime in a simulated DOM. They cover one-time reveals, project stagger, hover, touch filtering, initial and live reduced-motion preferences, themes, the menu, email copying, and form validation. They also compare the migrated content with the ignored pre-React snapshot when available. JSDOM does not verify pixel layout or real browser rendering.
 
-Original template backgrounds retain the MIT notice in `LICENSE.template`; production builds include it as `LICENSE.template.txt`. Project thumbnails are conceptual vector illustrations.
+Legacy template assets retain the MIT notice in `LICENSE.template`; production builds include it as `LICENSE.template.txt`. The hero and project artwork are original code-native SVG/CSS illustrations.

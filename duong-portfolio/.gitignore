@@ -2,6 +2,8 @@ node_modules/
 dist/
 .superdesign/tmp/
 .superdesign/init/
+.superdesign/website/
+.superdesign/resume.json
 .sites-runtime/
 .firebase/
 firebase-debug.log*
